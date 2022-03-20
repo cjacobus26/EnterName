@@ -1,6 +1,5 @@
 sceneSetups:
-- path: Assets/Cainos/Pixel Art Platformer - Village Props/Scene/SC Demo Scene -
-    Village Props.unity
+- path: Assets/Knight Files/Demo.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
