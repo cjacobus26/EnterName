@@ -8,7 +8,7 @@ public class CloudManager : MonoBehaviour
     public Transform CloudPrefab1, CloudPrefab2;
 
     private float cloudProbability, randomScale;
-    public int maxCloudNumber;
+    private int maxCloudNumber;
     private Vector3 cloudPosition;
 
     private GameObject[] Clouds;
@@ -50,6 +50,7 @@ public class CloudManager : MonoBehaviour
             if (Clouds[i].transform.position.x < -15.4)
             {
                 cloudProbability = Random.Range(-100.0f, 100.0f);
+                randomScale = Random.Range(0.2f, 1f);
                 cloudPosition = new Vector3(15.4f, Random.Range(-1.25f, 5f), 1 * -randomScale);
 
                 Destroy(Clouds[i]);

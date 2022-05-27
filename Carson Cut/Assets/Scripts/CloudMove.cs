@@ -5,19 +5,18 @@ using UnityEngine;
 public class CloudMove : MonoBehaviour
 {
 
-    public float cloudSpeed = 1f;
+    public float cloudSpeed = 100f;
     private Vector3 cloudVector;
 
     // Start is called before the first frame update
     void Start()
     {
-        cloudSpeed *= (transform.localScale.x * 10);
-        cloudSpeed *= .0004f;
+        cloudSpeed *= transform.localScale.x * .01f;
         cloudVector = new Vector3 (cloudSpeed, 0, 0);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         gameObject.transform.position -= cloudVector;
     }
