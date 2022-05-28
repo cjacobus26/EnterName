@@ -54,7 +54,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
         {
             //Lag compensation
             double timeToReachGoal = currentPacketTime - lastPacketTime;
-            currentTime += Time.deltaTime;
+            currentTime += Time.fixedDeltaTime;
 
             //Update remote player
             rb2D.position = Vector2.Lerp(positionAtLastPacket, networkPos, (float)(currentTime / timeToReachGoal));
@@ -94,44 +94,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
         swordHitbox.SetActive(true);
         new WaitForSeconds(0.1f);
         swordHitbox.SetActive(false);
-    }
-
-    void RemoveBanner(int lives)
-    {
-        if (lives == 2)
-        {
-            GameObject.Find("Health Bar 1/Knight Life Banner 3/Head").SetActive(false);
-        }
-
-        if (lives == 1)
-        {
-            GameObject.Find("Health Bar 1/Knight Life Banner 2/Head").SetActive(false);
-        }
-
-        if (lives == 0)
-        {
-            GameObject.Find("Health Bar 1/Knight Life Banner 1/Head").SetActive(false);
-            mainManager.Player2Win();
-        }
-    }
-
-    void RemoveBanner2(int lives)
-    {
-        if (lives == 2)
-        {
-            GameObject.Find("Health Bar 2/Knight Life Banner 3/Head").SetActive(false);
-        }
-
-        if (lives == 1)
-        {
-            GameObject.Find("Health Bar 2/Knight Life Banner 2/Head").SetActive(false);
-        }
-
-        if (lives == 0)
-        {
-            GameObject.Find("Health Bar 2/Knight Life Banner 1/Head").SetActive(false);
-            mainManager.Player1Win();
-        }
     }
 
     [PunRPC]
