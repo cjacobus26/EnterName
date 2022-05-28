@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     public bool Froze = false;
     public bool Dash = false;
     public bool isGrounded;
+    public bool Hit;
 
     // Start is called before the first frame update
     void Start()
@@ -75,7 +76,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             }
         }
 
-        if (!canMove && isGrounded)
+        if (!canMove && isGrounded && !Hit)
         {
             rb2D.velocity = Vector2.zero;
         }

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class combatManager : MonoBehaviourPunCallbacks
 {
-
-    public Animator anim;
     HealthBar healthBar;
     PlayerMovement playerMovement;
     PhotonView pView;
@@ -14,8 +12,8 @@ public class combatManager : MonoBehaviourPunCallbacks
 
     public int maxHealth = 100;
     public int Health;
+    public int Knockback = 10;
 
-    public Vector2 Knockback = new Vector2(150, 0);
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +33,14 @@ public class combatManager : MonoBehaviourPunCallbacks
         Health = maxHealth;
     }
 
+    private void FixedUpdate()
+    {
+        healthBar.SetHealth(Health);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        healthBar.SetHealth(Health);
-
         if (Input.GetMouseButtonDown(0) && pView.IsMine)
         {
             if (playerMovement.canMove && !playerMovement.Froze)
@@ -47,7 +48,8 @@ public class combatManager : MonoBehaviourPunCallbacks
                 playerMovement.canMove = false;
                 playerMovement.canDash = false;
                 StartCoroutine(AttackCooldown(.5f));
-                pView.RPC("RPC_Attack", RpcTarget.All);
+                playerScript.anim.SetTrigger("Attack");
+                pView.RPC("RPC_Attack", RpcTarget.Others);
             }
         }
     }
@@ -57,6 +59,7 @@ public class combatManager : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(waitTime);
         playerMovement.canMove = true;
         playerMovement.canDash = true;
+        playerMovement.Hit = false;
     }
 
     IEnumerator AttackCooldown(float waitTime)
@@ -66,26 +69,27 @@ public class combatManager : MonoBehaviourPunCallbacks
         playerMovement.canDash = true;
     }
 
-    public void TakeDamage(int damage, int lookDir)
+    public void TakeDamage(GameObject Target, int damage, int lookDir)
     {
-        Debug.Log(transform.parent.gameObject.name + " Took damage");
         Health -= damage;
-        gameObject.transform.parent.GetComponent<Rigidbody2D>().AddForce(Knockback * lookDir);
+        playerMovement.Hit = true;
         playerMovement.Dash = false;
+        playerMovement.canMove = false;
+        playerMovement.canDash = false;
+        playerMovement.rb2D.AddForce(new Vector2(Knockback * lookDir, 0));
 
         if (Health > 0)
         {
-            pView.RPC("RPC_Hit", RpcTarget.Others);
-            playerMovement.canMove = false;
-            playerMovement.canDash = false;
-            StartCoroutine(StaggerTime(0.1f));
+            //If Hit
+            playerScript.anim.SetTrigger("Hit");
+            playerScript.hitClip.Play();
+            StartCoroutine(StaggerTime(0.5f));
         }
         else
         {
-            //If dead
-            pView.RPC("RPC_Death", RpcTarget.Others);
-            playerMovement.canMove = false;
-            playerMovement.canDash = false;
+            //If dead on Hit
+            playerScript.anim.SetTrigger("Death");
+            playerScript.deathClip.Play();
         }
     }
 }

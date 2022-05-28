@@ -18,6 +18,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
     public int playerLives = 3;
 
     private int networkHealth;
+    private int networkDir;
     private Vector2 networkVelocity;
     private Quaternion networkRot;
     private Vector2 networkPos;
@@ -61,6 +62,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             rb2D.velocity = Vector2.Lerp(velocityAtLastPacket, networkVelocity, (float)(currentTime / timeToReachGoal));
             transform.rotation = networkRot;
             CombatManager.Health = networkHealth;
+            playerMovement.lookDir = networkDir;
 
             if (Vector3.Distance(rb2D.position, networkPos) > 5)
             {
@@ -108,20 +110,6 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
         anim.SetTrigger("Attack");
     }
 
-    [PunRPC]
-    private void RPC_Hit()
-    {
-        anim.SetTrigger("Hit");
-        hitClip.Play();
-    }
-
-    [PunRPC]
-    private void RPC_Death()
-    {
-        anim.SetTrigger("Death");
-        deathClip.Play();
-    }
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -131,6 +119,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             stream.SendNext(rb2D.velocity);
             stream.SendNext(transform.rotation);
             stream.SendNext(CombatManager.Health);
+            stream.SendNext(playerMovement.lookDir);
         }
         else
         {
@@ -139,6 +128,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             networkVelocity = (Vector2)stream.ReceiveNext();
             networkRot = (Quaternion)stream.ReceiveNext();
             networkHealth = (int)stream.ReceiveNext();
+            networkDir = (int)stream.ReceiveNext();
 
             //Lag compensation
             currentTime = 0.0f;

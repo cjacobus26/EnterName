@@ -27,8 +27,6 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
     PhotonUnityNetworking.Editor.dll:
-    - Photon.Pun.PhotonAnimatorViewEditor
-    - Photon.Pun.PhotonViewInspector
     - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
@@ -61,8 +59,10 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
+    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -660,7 +660,7 @@ ScriptsOnlyBuild:
     className: CurrentRoomIsVisibleProperty
   - hash:
       serializedVersion: 2
-      Hash: 7a45964b1b49b7685f6f2b65c4a26a0d
+      Hash: 70d10b4ef22407d4644c40c584c0f106
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMovement
@@ -1182,7 +1182,7 @@ ScriptsOnlyBuild:
     className: ConnectToRegionUIForm
   - hash:
       serializedVersion: 2
-      Hash: 97bd9c2a6c9d966d392421f70f0a8bed
+      Hash: d6d3cf766fda713474d2bb9f2810079c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: combatManager
@@ -1918,4 +1918,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/LobbyCreate.unity
   - Assets/Scenes/WaitingForPlayers.unity
   - Assets/Scenes/Level1.unity
-  playerPath: C:/Users/Owens PC/Desktop/Carson Cut Closed Beta V0.069/Carson Cut.exe
+  playerPath: C:/Users/Owens PC/Desktop/Carson Cut Closed Beta V0.069c/Carson Cut.exe

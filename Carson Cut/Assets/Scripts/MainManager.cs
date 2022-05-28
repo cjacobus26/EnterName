@@ -74,7 +74,7 @@ public class MainManager : MonoBehaviourPunCallbacks
                 {
                     if (Player1.GetComponentInChildren<combatManager>().Health > 0)
                     {
-                        Player1.GetComponentInChildren<combatManager>().TakeDamage(Player1.GetComponentInChildren<combatManager>().maxHealth, 0);
+                        Player1.GetComponentInChildren<combatManager>().TakeDamage(Player1, Player1.GetComponentInChildren<combatManager>().maxHealth, 0);
                     }
                 }
 
@@ -95,7 +95,7 @@ public class MainManager : MonoBehaviourPunCallbacks
                 {
                     if (Player2.GetComponentInChildren<combatManager>().Health > 0)
                     {
-                        Player2.GetComponentInChildren<combatManager>().TakeDamage(Player2.GetComponentInChildren<combatManager>().maxHealth, 0);
+                        Player2.GetComponentInChildren<combatManager>().TakeDamage(Player2, Player2.GetComponentInChildren<combatManager>().maxHealth, 0);
                     }
                 }
 

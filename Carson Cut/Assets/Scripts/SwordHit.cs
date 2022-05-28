@@ -24,7 +24,7 @@ public class SwordHit : MonoBehaviourPunCallbacks
         {
             if (collision.GetComponentInChildren<combatManager>().Health > 0)
             {
-                collision.GetComponentInChildren<combatManager>().TakeDamage(10, playerMovement.lookDir);
+                collision.GetComponentInChildren<combatManager>().TakeDamage(collision.gameObject, 10, playerMovement.lookDir);
             }
         }
     }
