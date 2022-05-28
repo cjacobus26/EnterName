@@ -8,8 +8,8 @@ using TMPro;
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
     public GameObject lobbyUI, waitingUI;
-    public TMP_InputField createInput, joinInput;
 
+    public TMP_InputField createInput, joinInput;
 
     // Start is called before the first frame update
     void Start()
@@ -17,14 +17,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         
     }
 
-    private void Awake()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
+        //Close Application on Esc Press
         if (Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();

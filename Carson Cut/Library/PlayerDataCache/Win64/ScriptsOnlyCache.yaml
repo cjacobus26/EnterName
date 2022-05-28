@@ -12,7 +12,6 @@ ScriptsOnlyBuild:
     - MainManager
     - PlayerMovement
     - PlayerScript
-    - RoundTextManager
     - SwordHit
     - WaitingForPlayersTextScript
     - combatManager
@@ -26,8 +25,6 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.PunBasics.PlayerUI
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
-    PhotonUnityNetworking.Editor.dll:
-    - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
     - Photon.Pun.PhotonRigidbodyView
@@ -636,7 +633,7 @@ ScriptsOnlyBuild:
     className: PhotonTransformViewClassic
   - hash:
       serializedVersion: 2
-      Hash: ba93717e3f62c66a7f9d0fe6ed81d9ce
+      Hash: c1d5727dd416f837e386f662fed17853
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerScript
@@ -660,7 +657,7 @@ ScriptsOnlyBuild:
     className: CurrentRoomIsVisibleProperty
   - hash:
       serializedVersion: 2
-      Hash: 70d10b4ef22407d4644c40c584c0f106
+      Hash: a25fdc0edb099e3853a77fe9a0739e49
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMovement
@@ -958,12 +955,6 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: GraphicRaycaster
-  - hash:
-      serializedVersion: 2
-      Hash: d01a81c18c418235513c6acf4a721648
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: RoundTextManager
   - hash:
       serializedVersion: 2
       Hash: d7f7bc402888d42a0dbb080693e6863c
@@ -1918,4 +1909,4 @@ ScriptsOnlyBuild:
   - Assets/Scenes/LobbyCreate.unity
   - Assets/Scenes/WaitingForPlayers.unity
   - Assets/Scenes/Level1.unity
-  playerPath: C:/Users/Owens PC/Desktop/Carson Cut Closed Beta V0.069c/Carson Cut.exe
+  playerPath: C:/Users/Owens PC/Desktop/Carson Cut Closed Beta V0.069d/Carson Cut.exe

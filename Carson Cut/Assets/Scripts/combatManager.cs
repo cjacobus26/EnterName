@@ -21,6 +21,7 @@ public class combatManager : MonoBehaviourPunCallbacks
         playerScript = transform.parent.gameObject.GetComponent<PlayerScript>();
         pView = PhotonView.Get(this);
 
+        //Get HealthBar from correct place
         if (this.transform.parent.name == "Player1")
         {
             healthBar = GameObject.Find("Canvas/Health Bar 1").GetComponent<HealthBar>();
@@ -33,18 +34,16 @@ public class combatManager : MonoBehaviourPunCallbacks
         Health = maxHealth;
     }
 
-    private void FixedUpdate()
-    {
-        healthBar.SetHealth(Health);
-    }
-
     // Update is called once per frame
     void Update()
     {
+        healthBar.SetHealth(Health);
+
         if (Input.GetMouseButtonDown(0) && pView.IsMine)
         {
             if (playerMovement.canMove && !playerMovement.Froze)
             {
+                //Attack
                 playerMovement.canMove = false;
                 playerMovement.canDash = false;
                 StartCoroutine(AttackCooldown(.5f));
@@ -69,7 +68,7 @@ public class combatManager : MonoBehaviourPunCallbacks
         playerMovement.canDash = true;
     }
 
-    public void TakeDamage(GameObject Target, int damage, int lookDir)
+    public void TakeDamage(int damage, int lookDir)
     {
         Health -= damage;
         playerMovement.Hit = true;
@@ -80,14 +79,14 @@ public class combatManager : MonoBehaviourPunCallbacks
 
         if (Health > 0)
         {
-            //If Hit
+            //If not Dead
             playerScript.anim.SetTrigger("Hit");
             playerScript.hitClip.Play();
             StartCoroutine(StaggerTime(0.5f));
         }
         else
         {
-            //If dead on Hit
+            //If Dead
             playerScript.anim.SetTrigger("Death");
             playerScript.deathClip.Play();
         }

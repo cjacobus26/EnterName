@@ -11,9 +11,7 @@ public class MainManager : MonoBehaviourPunCallbacks
     public GameObject Player1WinsGameText, Player2WinsGameText;
     public GameObject readyText, fightText;
     public GameObject KnightLifeBannerPrefab;
-
     public GameObject Player1, Player2;
-
     private GameObject P1Banner1, P1Banner2, P1Banner3, P2Banner1, P2Banner2, P2Banner3;
 
     public AudioSource readyClip, fightClip;
@@ -26,12 +24,13 @@ public class MainManager : MonoBehaviourPunCallbacks
     public bool GameRunning = false;
 
     private Vector3 BannerSpace = new Vector3(40, 0, 0);
-    private Vector3 SpawnPos1 = new Vector3(-5.75f, -1.4f, 0);
-    private Vector3 SpawnPos2 = new Vector3(5.75f, -1.4f, 0);
+    private Vector3 SpawnPos1 = new Vector3(-5.75f, -2.4f, 0);
+    private Vector3 SpawnPos2 = new Vector3(5.75f, -2.4f, 0);
 
     // Start is called before the first frame update
     void Start()
     {
+        //Spawn Players and Banners
         if (PhotonNetwork.IsMasterClient)
         {
             SpawnPlayer1();
@@ -44,18 +43,15 @@ public class MainManager : MonoBehaviourPunCallbacks
             SpawnBanner2();
         }
 
+        //Start Ready Text
         StartCoroutine(TurnOnReadyText(ReadyWait));
         roundNum = 1;
-    }
-
-    private void Awake()
-    {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+        //If Player is null find Player
         if (Player1 == null && Player2 != null && !PhotonNetwork.IsMasterClient)
         {
             Player1 = GameObject.Find("Player1");
@@ -74,12 +70,14 @@ public class MainManager : MonoBehaviourPunCallbacks
                 {
                     if (Player1.GetComponentInChildren<combatManager>().Health > 0)
                     {
-                        Player1.GetComponentInChildren<combatManager>().TakeDamage(Player1, Player1.GetComponentInChildren<combatManager>().maxHealth, 0);
+                        //If Player2 is Below Map
+                        Player1.GetComponentInChildren<combatManager>().TakeDamage(Player1.GetComponentInChildren<combatManager>().maxHealth, 0);
                     }
                 }
 
                 if (Player1.GetComponentInChildren<combatManager>().Health <= 0)
                 {
+                    //If Player1 Died
                     GameRunning = false;
                     Player1Lives--;
                     StartCoroutine(Player2RoundWin(RoundWinTime));
@@ -95,12 +93,14 @@ public class MainManager : MonoBehaviourPunCallbacks
                 {
                     if (Player2.GetComponentInChildren<combatManager>().Health > 0)
                     {
-                        Player2.GetComponentInChildren<combatManager>().TakeDamage(Player2, Player2.GetComponentInChildren<combatManager>().maxHealth, 0);
+                        //If Player2 is Below Map
+                        Player2.GetComponentInChildren<combatManager>().TakeDamage(Player2.GetComponentInChildren<combatManager>().maxHealth, 0);
                     }
                 }
 
                 if (Player2.GetComponentInChildren<combatManager>().Health <= 0)
                 {
+                    //If Player2 Died
                     GameRunning = false;
                     Player2Lives--;
                     StartCoroutine(Player1RoundWin(RoundWinTime));
@@ -161,16 +161,17 @@ public class MainManager : MonoBehaviourPunCallbacks
 
     void RestartRound()
     {
-        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
-
         roundNum++;
+
         if (PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.Destroy(Player1);
             SpawnPlayer1();
         }
 
         if (!PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.Destroy(Player2);
             SpawnPlayer2();
         }
 
@@ -182,9 +183,11 @@ public class MainManager : MonoBehaviourPunCallbacks
 
     public IEnumerator Player1RoundWin(int waitTime)
     {
+        //Freeze Player1
         Player1.GetComponent<PlayerMovement>().canMove = true;
         Player1.GetComponent<PlayerMovement>().Froze = true;
 
+        //Remove Player2 Banner Head
         if (Player2Lives == 2)
         {
             GameObject.Find("Health Bar 2/Knight Life Banner 3/Head").SetActive(false);
@@ -197,26 +200,31 @@ public class MainManager : MonoBehaviourPunCallbacks
 
         if (Player2Lives == 0)
         {
+            //If Player2 Died
             GameObject.Find("Health Bar 2/Knight Life Banner 1/Head").SetActive(false);
             Player1Win();
         }
 
-        if (Player1Lives > 0 && Player2Lives > 0)
+        if (Player2Lives > 0)
         {
+            //If Player2 has lives
             Player1WinsText.SetActive(true);
         }
         yield return new WaitForSeconds(waitTime);
         if (Player1Lives > 0 && Player2Lives > 0)
         {
+            //If Player2 has lives Restart Round
             Player1WinsText.SetActive(false);
             RestartRound();
         }
     }
     public IEnumerator Player2RoundWin(int waitTime)
     {
+        //Freeze Player2
         Player2.GetComponent<PlayerMovement>().canMove = true;
         Player2.GetComponent<PlayerMovement>().Froze = true;
 
+        //Remove Player1 Banner Head
         if (Player1Lives == 2)
         {
             GameObject.Find("Health Bar 1/Knight Life Banner 3/Head").SetActive(false);
@@ -229,17 +237,20 @@ public class MainManager : MonoBehaviourPunCallbacks
 
         if (Player1Lives == 0)
         {
+            //If Player1 Died
             GameObject.Find("Health Bar 1/Knight Life Banner 1/Head").SetActive(false);
             Player2Win();
         }
 
         if (Player1Lives > 0 && Player2Lives > 0)
         {
+            //If Player1 has lives
             Player2WinsText.SetActive(true);
         }
         yield return new WaitForSeconds(waitTime);
         if (Player1Lives > 0 && Player2Lives > 0)
         {
+            //If Player1 has lives Restart Round
             Player2WinsText.SetActive(false);
             RestartRound();
         }
@@ -247,10 +258,12 @@ public class MainManager : MonoBehaviourPunCallbacks
     public void Player1Win()
     {
         Player1WinsGameText.SetActive(true);
+        StartCoroutine(WaitToLeave(5));
     }
     public void Player2Win()
     {
         Player2WinsGameText.SetActive(true);
+        StartCoroutine(WaitToLeave(5));
     }
 
     IEnumerator TurnOnReadyText(int waitTime)
@@ -271,6 +284,7 @@ public class MainManager : MonoBehaviourPunCallbacks
 
         GameRunning = true;
 
+        //Unfreeze Players
         if (Player1 != null)
         {
             Player1.GetComponent<PlayerMovement>().canMove = true;
@@ -282,6 +296,16 @@ public class MainManager : MonoBehaviourPunCallbacks
         }
     }
 
+    IEnumerator WaitToLeave(int waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
     public override void OnLeftRoom()
     {
         PhotonNetwork.LoadLevel("LobbyCreate");
@@ -289,6 +313,7 @@ public class MainManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
         PhotonNetwork.LeaveRoom();
     }
 }

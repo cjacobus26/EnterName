@@ -8,6 +8,7 @@ public class LoadingTextScript : MonoBehaviour
     public TMP_Text loadingText;
 
     private int updateNum;
+
     // Start is called before the first frame update
     void Awake()
     {

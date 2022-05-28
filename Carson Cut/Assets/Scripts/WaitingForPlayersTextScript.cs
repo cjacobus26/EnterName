@@ -8,6 +8,7 @@ public class WaitingForPlayersTextScript : MonoBehaviour
     public TMP_Text waitingText;
 
     private int updateNum;
+
     // Start is called before the first frame update
     void Awake()
     {

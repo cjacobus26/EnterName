@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class CloudManager : MonoBehaviour
 {
+    private GameObject[] Clouds;
 
     public Transform CloudPrefab1, CloudPrefab2;
 
-    private float cloudProbability, randomScale;
-    private int maxCloudNumber;
-    private Vector3 cloudPosition;
+    private int cloudNumber;
 
-    private GameObject[] Clouds;
+    private float cloudProbability, randomScale;
+
+    private Vector3 cloudPosition;
 
     // Start is called before the first frame update
     void Start()
     {
-        maxCloudNumber = Random.Range(5, 8);
-        Clouds = new GameObject[maxCloudNumber];
+        cloudNumber = 8;
+        Clouds = new GameObject[cloudNumber];
 
-        for (int i = 0; i < maxCloudNumber; i++)
+        //Spawn cloudNumber of clouds in random set position
+        for (int i = 0; i < cloudNumber; i++)
         {
             cloudProbability = Random.Range(-100.0f, 100.0f);
             randomScale = Random.Range(0.2f, 1f);
@@ -45,6 +47,7 @@ public class CloudManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Destory clouds if off screen to the left and spawn another at random set spawn on the right of the screen
         for(int i = 0; i < Clouds.Length; i++)
         {
             if (Clouds[i].transform.position.x < -15.4)
@@ -69,7 +72,7 @@ public class CloudManager : MonoBehaviour
                     go.transform.parent = GameObject.Find("Clouds").transform;
                     Clouds[i] = go;
                 }
-                i--;
+                //i--;
             }
         }
     }

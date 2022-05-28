@@ -162,6 +162,7 @@ MonoBehaviour:
   deathClip: {fileID: 3529055505513863494}
   swingClip: {fileID: 389217456123345907}
   playerLives: 3
+  calcLag: 0
 --- !u!114 &4271012338608059774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,9 +180,9 @@ MonoBehaviour:
   anim: {fileID: 7230311410614218338}
   jumpClip: {fileID: 7513055291438996230}
   dashClip: {fileID: 548292937384744377}
+  lookDir: 0
   horizontalInput: 0
   verticalVelocity: 0
-  lookDir: 0
   canMove: 0
   canDash: 1
   Froze: 0
@@ -748,7 +749,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Moving
   - Type: 1
-    SynchronizeType: 1
+    SynchronizeType: 2
     Name: Y Velocity
   m_SynchronizeLayers:
   - SynchronizeType: 0

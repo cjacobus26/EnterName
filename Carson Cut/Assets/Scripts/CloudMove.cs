@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CloudMove : MonoBehaviour
 {
-
     public float cloudSpeed = 100f;
+
     private Vector3 cloudVector;
 
     // Start is called before the first frame update

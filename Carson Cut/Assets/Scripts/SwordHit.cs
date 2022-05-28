@@ -6,16 +6,11 @@ using UnityEngine;
 public class SwordHit : MonoBehaviourPunCallbacks
 {
     PlayerMovement playerMovement;
+
     // Start is called before the first frame update
     void Start()
     {
         playerMovement = transform.parent.gameObject.GetComponent<PlayerMovement>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -24,7 +19,8 @@ public class SwordHit : MonoBehaviourPunCallbacks
         {
             if (collision.GetComponentInChildren<combatManager>().Health > 0)
             {
-                collision.GetComponentInChildren<combatManager>().TakeDamage(collision.gameObject, 10, playerMovement.lookDir);
+                //If Trigger Hits Other Players Collider TakeDamage
+                collision.GetComponentInChildren<combatManager>().TakeDamage(10, playerMovement.lookDir);
             }
         }
     }

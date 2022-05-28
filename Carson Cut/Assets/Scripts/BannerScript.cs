@@ -8,6 +8,7 @@ public class BannerScript : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
+        //Set Banner Name
         if (this.gameObject.name == "Knight Life Banner(Clone)")
         {
             if (PhotonNetwork.IsMasterClient && photonView.IsMine)
@@ -33,16 +34,5 @@ public class BannerScript : MonoBehaviourPunCallbacks
                 this.gameObject.name = "Knight Life Banner " + (photonView.ViewID - 1001);
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private void Awake()
-    {
-        
     }
 }

@@ -10,27 +10,31 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
     public Rigidbody2D rb2D;
     public AudioSource hitClip, deathClip, swingClip;
     
-    MainManager mainManager;
-    PlayerMovement playerMovement;
-    combatManager CombatManager;
-    PhotonView pView;
+    private MainManager mainManager;
+    private PlayerMovement playerMovement;
+    private combatManager CombatManager;
+    private PhotonView pView;
 
     public int playerLives = 3;
-
     private int networkHealth;
     private int networkDir;
-    private Vector2 networkVelocity;
+
+    private float currentTime = 0;
+
+    private double currentPacketTime = 0;
+    private double lastPacketTime = 0;
+
+    public bool calcLag;
+
     private Quaternion networkRot;
+
+    private Vector2 positionAtLastPacket = Vector2.zero;
+    private Vector2 velocityAtLastPacket = Vector2.zero;
     private Vector2 networkPos;
-    float currentTime = 0;
-    double currentPacketTime = 0;
-    double lastPacketTime = 0;
-    Vector2 positionAtLastPacket = Vector2.zero;
-    Vector2 velocityAtLastPacket = Vector2.zero;
-    private bool calcLag;
+    private Vector2 networkVelocity;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CombatManager = GetComponentInChildren<combatManager>();
         playerMovement = this.transform.gameObject.GetComponent<PlayerMovement>();
@@ -40,34 +44,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
         if (photonView.IsMine)
         {
+            //Sync GameObject Name With All Server Clients
             pView.RPC("RPC_ChangeName", RpcTarget.All, PhotonNetwork.LocalPlayer.ActorNumber);
-        }
-    }
-
-    private void Awake()
-    {
-        
-    }
-
-    void FixedUpdate()
-    {
-        if (!photonView.IsMine && calcLag)
-        {
-            //Lag compensation
-            double timeToReachGoal = currentPacketTime - lastPacketTime;
-            currentTime += Time.fixedDeltaTime;
-
-            //Update remote player
-            rb2D.position = Vector2.Lerp(positionAtLastPacket, networkPos, (float)(currentTime / timeToReachGoal));
-            rb2D.velocity = Vector2.Lerp(velocityAtLastPacket, networkVelocity, (float)(currentTime / timeToReachGoal));
-            transform.rotation = networkRot;
-            CombatManager.Health = networkHealth;
-            playerMovement.lookDir = networkDir;
-
-            if (Vector3.Distance(rb2D.position, networkPos) > 5)
-            {
-                rb2D.position = networkPos;
-            }
         }
     }
 
@@ -84,8 +62,29 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                //Leave Room when Esc is Pressed
                 PhotonNetwork.DestroyPlayerObjects(PhotonNetwork.LocalPlayer);
                 PhotonNetwork.LeaveRoom();
+            }
+        }
+
+        if (!photonView.IsMine && calcLag)
+        {
+            //Lag compensation
+            double timeToReachGoal = currentPacketTime - lastPacketTime;
+            currentTime += Time.deltaTime;
+
+            //Update remote player
+            rb2D.position = Vector2.Lerp(positionAtLastPacket, networkPos, (float)(currentTime / timeToReachGoal));
+            rb2D.velocity = Vector2.Lerp(velocityAtLastPacket, networkVelocity, (float)(currentTime / timeToReachGoal));
+            transform.rotation = networkRot;
+            CombatManager.Health = networkHealth;
+            playerMovement.lookDir = networkDir;
+
+            if (Vector3.Distance(rb2D.position, networkPos) > 3)
+            {
+                //Update Pos of actual distance if too far from servers Pos
+                rb2D.position = networkPos;
             }
         }
     }

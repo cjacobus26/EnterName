@@ -11,14 +11,4 @@ public class HealthBar : MonoBehaviour
     {
         slider.value = health;
     }
-
-    private void Start()
-    {
-        
-    }
-
-    private void Update()
-    {
-        
-    }
 }
