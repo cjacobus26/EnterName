@@ -7,10 +7,16 @@ public class SwordHit : MonoBehaviourPunCallbacks
 {
     PlayerMovement playerMovement;
 
+    public bool check;
+
     // Start is called before the first frame update
     void Start()
     {
         playerMovement = transform.parent.gameObject.GetComponent<PlayerMovement>();
+    }
+    private void Update()
+    {
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

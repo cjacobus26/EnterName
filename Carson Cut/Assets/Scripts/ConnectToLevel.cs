@@ -16,7 +16,16 @@ public class ConnectToLevel : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            //Leave Room when Esc is Pressed
+            PhotonNetwork.LeaveRoom();
+        }
+    }
+
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel("LobbyCreate");
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

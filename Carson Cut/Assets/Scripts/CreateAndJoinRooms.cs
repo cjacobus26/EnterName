@@ -29,7 +29,15 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(createInput.text.ToLower());
+        if (createInput.text.Length > 0)
+        {
+            PhotonNetwork.CreateRoom(createInput.text.ToLower());
+        }
+        else
+        {
+           //Has No CreateID
+        }
+        
     }
 
     public void JoinRoom()

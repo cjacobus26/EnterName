@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 3299578017079679183}
   - component: {fileID: 389217456123345907}
   - component: {fileID: -7530086400740954208}
-  - component: {fileID: 4881303292222518888}
+  - component: {fileID: 1059293304437677083}
   m_Layer: 0
   m_Name: Knight Player
   m_TagString: Knight
@@ -184,6 +184,7 @@ MonoBehaviour:
   horizontalInput: 0
   verticalVelocity: 0
   canMove: 0
+  isMoving: 0
   canDash: 1
   Froze: 0
   Dash: 0
@@ -708,11 +709,11 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: -5581393771778082634}
-  - {fileID: 4881303292222518888}
+  - {fileID: 1059293304437677083}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &4881303292222518888
+--- !u!114 &1059293304437677083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -798,6 +799,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b7b6c77bb17c474eafb59ea41403e63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  check: 0
 --- !u!60 &2915394537772670638
 PolygonCollider2D:
   m_ObjectHideFlags: 0

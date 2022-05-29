@@ -15,12 +15,6 @@ public class WaitingForPlayersTextScript : MonoBehaviour
         StartCoroutine(UpdateWaitingText());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     IEnumerator UpdateWaitingText()
     {
         updateNum++;

@@ -17,7 +17,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     public int playerLives = 3;
     private int networkHealth;
-    private int networkDir;
+    private int networkLook;
 
     private float currentTime = 0;
 
@@ -25,13 +25,14 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
     private double lastPacketTime = 0;
 
     public bool calcLag;
-
-    private Quaternion networkRot;
+    private bool networkCanMove;
 
     private Vector2 positionAtLastPacket = Vector2.zero;
     private Vector2 velocityAtLastPacket = Vector2.zero;
     private Vector2 networkPos;
     private Vector2 networkVelocity;
+
+    private Quaternion networkRot;
 
     // Start is called before the first frame update
     void Awake()
@@ -79,7 +80,8 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             rb2D.velocity = Vector2.Lerp(velocityAtLastPacket, networkVelocity, (float)(currentTime / timeToReachGoal));
             transform.rotation = networkRot;
             CombatManager.Health = networkHealth;
-            playerMovement.lookDir = networkDir;
+            playerMovement.lookDir = networkLook;
+            playerMovement.canMove = networkCanMove;
 
             if (Vector3.Distance(rb2D.position, networkPos) > 3)
             {
@@ -91,22 +93,22 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
 
     void Attack()
     {
-        swingClip.Play();
         swordHitbox.SetActive(true);
         new WaitForSeconds(0.1f);
         swordHitbox.SetActive(false);
     }
 
     [PunRPC]
-    private void RPC_ChangeName(int playerID)
-    {
-        this.gameObject.name = "Player" + playerID;
-    }
-
-    [PunRPC]
     private void RPC_Attack()
     {
         anim.SetTrigger("Attack");
+        swingClip.Play();
+    }
+
+    [PunRPC]
+    private void RPC_ChangeName(int playerID)
+    {
+        this.gameObject.name = "Player" + playerID;
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -127,7 +129,7 @@ public class PlayerScript : MonoBehaviourPunCallbacks, IPunObservable
             networkVelocity = (Vector2)stream.ReceiveNext();
             networkRot = (Quaternion)stream.ReceiveNext();
             networkHealth = (int)stream.ReceiveNext();
-            networkDir = (int)stream.ReceiveNext();
+            networkLook = (int)stream.ReceiveNext();
 
             //Lag compensation
             currentTime = 0.0f;

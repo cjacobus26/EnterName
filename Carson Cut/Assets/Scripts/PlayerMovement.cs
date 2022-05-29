@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
     private float dashCooldownTime = .5f;
 
     public bool canMove = false;
+    public bool isMoving;
     public bool canDash = true;
     public bool Froze = false;
     public bool Dash = false;
@@ -140,11 +141,35 @@ public class PlayerMovement : MonoBehaviourPunCallbacks
             //Player Grounded
             isGrounded = true;
             anim.SetBool("Grounded", isGrounded);
+            if (transform.position.y < -2.45f)
+            {
+                //Stop moving when hitting Ground walls
+                Dash = false;
+                isGrounded = false;
+                anim.SetBool("Grounded", isGrounded);
+                anim.SetTrigger("Jump");
+                canMove = false;
+                canDash = false;
+                rb2D.velocity = new Vector2(0, rb2D.velocity.y);
+                Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
+            }
         }
         if (collision.gameObject.name == "Player1" || collision.gameObject.name == "Player2")
         {
             //Ignore Players colliding
             Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+        {
+            if (transform.position.y < -2.45f)
+            {
+                //can dash if not on Ground walls
+                canDash = true;
+            }
         }
     }
 

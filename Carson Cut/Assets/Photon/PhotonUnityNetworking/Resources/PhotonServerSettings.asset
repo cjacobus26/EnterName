@@ -45,6 +45,11 @@ MonoBehaviour:
   - TakeDamage
   - RPC_Death
   - RPC_Hit
+  - RPC_Jump
+  - RPC_Move
+  - RPC_Dash
+  - RPC_Moving
+  - RPC_TakeDamage
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
